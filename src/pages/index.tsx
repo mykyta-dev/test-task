@@ -1,8 +1,6 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { TablePage } from "./TablePage";
-import { Provider } from "react-redux";
-import store from "@/store";
+import TablePage from "./TablePage";
 
 export default function Home() {
   return (
@@ -20,9 +18,7 @@ export default function Home() {
         />
       </Head>
       <main className={styles.main}>
-        <Provider store={store}>
-          <TablePage />
-        </Provider>
+        <TablePage />
       </main>
     </>
   );

@@ -1,7 +1,13 @@
 import { Table } from "@/components/Table/Table";
+import { Provider } from "react-redux";
+import store from "@/store";
 
-export const TablePage = () => (
-  <div className="table-page">
-    <Table />
-  </div>
-)
+export default function TablePage() {
+  return (
+    <Provider store={store}>
+      <div className="table-page">
+        <Table />
+      </div>
+    </Provider>
+  );
+}
