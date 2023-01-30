@@ -3,20 +3,23 @@ import { useSelector } from "react-redux";
 import Checkbox from "@mui/material/Checkbox";
 import styles from "@/components/Table/Table.module.css";
 import { TableRow } from "../TableRow/TableRow";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { TableRowType } from "@/store/reducers/tableReducer/initialState";
+import TableHeader from "../TableHeader";
+import { RootState } from "@/store";
 
 export const Table = () => {
   const [sortCriteria, setSortCriteria] = useState<keyof TableRowType>("id");
-  const tableRows = useSelector(SelectTableData);
+  const [sortType, setSortType] = useState<"asc" | "desc">("asc");
+  const tableRows = useSelector<RootState, TableRowType[]>((state) => SelectTableData(state, sortCriteria, sortType));
 
-  // const handleChangingSortCriteria = useCallback((criteria: string) => {
-  //   setSortCriteria(criteria);
-  // }, []);
-
-  // const filtredData = useMemo(() => (
-  //   sortCriteria ? [...tableRows].sort(row => row[${}]) : tableRows
-  // ), [sortCriteria]
+  const sortBy = useCallback(
+    (criteria: keyof TableRowType) => {
+      setSortCriteria(criteria);
+      setSortType(sortType === "asc" ? "desc" : "asc");
+    },
+    [sortType]
+  );
 
   return (
     <table className={styles.table}>
@@ -25,21 +28,31 @@ export const Table = () => {
           <th className={styles.tableHeaderCheckbox}>
             <Checkbox sx={{ "& .MuiSvgIcon-root": { fontSize: 25 } }} />
           </th>
-
-          <th
-            className={styles.tableHeader}
-            onClick={() => setSortCriteria("name")}
-          >
-            Name
-          </th>
-
-          <th className={styles.tableHeader}>Email</th>
-
-          <th className={styles.tableHeader}>Company</th>
-
-          <th className={styles.tableHeader}>Phone Number</th>
-
-          <th className={styles.tableHeader}>Status</th>
+          <TableHeader
+            title="Name"
+            onClick={() => sortBy("name")}
+            showSortIcon={sortCriteria === "name"}
+            sortType={sortType}
+          />
+          <TableHeader
+            title="Email"
+            onClick={() => sortBy("email")}
+            showSortIcon={sortCriteria === "email"}
+            sortType={sortType}
+          />
+          <TableHeader
+            title="Company"
+            onClick={() => sortBy("company")}
+            showSortIcon={sortCriteria === "company"}
+            sortType={sortType}
+          />
+          <TableHeader
+            title="Phone Number"
+            onClick={() => sortBy("phone")}
+            showSortIcon={sortCriteria === "phone"}
+            sortType={sortType}
+          />
+          <TableHeader title="Status" />
         </tr>
       </thead>
 

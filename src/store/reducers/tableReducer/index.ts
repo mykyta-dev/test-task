@@ -5,16 +5,22 @@ import { initialState } from "./initialState";
 export const TableReducer = (state = initialState, action: TableActions) => {
   switch (action.type) {
     case CHANGE_TABLE_FIELD:
-      const newState = state.tableData.map(tableRow => {
-        if (tableRow.id === action.id) {
-          tableRow[action.field] = action.value;
-        }
-      })
+      const newState = {
+        ...state,
+        tableData: state.tableData.map((row) => {
+          if (row.id === action.id) {
+            return {
+              ...row,
+              [action.field]: action.value,
+            };
+          }
 
+          return row;
+        }),
+      };
+      return newState;
+    default:
       return state;
-
-      default:
-        return state;
   }
 };
 
