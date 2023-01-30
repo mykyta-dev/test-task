@@ -1,0 +1,1 @@
+export const CHANGE_TABLE_FIELD = "CHANGE_TABLE_FIELD"
